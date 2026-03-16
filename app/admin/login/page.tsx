@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Shield, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/admin";
 
@@ -33,8 +32,9 @@ export default function AdminLoginPage() {
       return;
     }
 
-    router.push(redirect);
-    router.refresh();
+    // Use a full page navigation so the browser sends updated cookies and
+    // proxy.ts can immediately read the new Supabase session cookie.
+    window.location.href = redirect;
   };
 
   return (
