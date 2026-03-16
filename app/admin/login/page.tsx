@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { Shield, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-center";
+import { Shield, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react"; // Fixed import
 import { supabase } from "@/lib/supabaseClient";
 
 /**
@@ -164,7 +164,7 @@ export default function AdminLoginPage() {
       <Suspense fallback={
         <div className="flex flex-col items-center gap-4 text-slate-400">
           <Loader2 size={32} className="animate-spin text-blue-500" />
-          <p className="text-sm font-medium">Initializing Secure Portal...</p>
+          <p className="text-sm font-medium text-white/70">Initializing Secure Portal...</p>
         </div>
       }>
         <LoginForm />
