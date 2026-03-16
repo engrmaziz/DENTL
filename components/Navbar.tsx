@@ -10,6 +10,7 @@ const navLinks = [
   { name: "About Us", href: "/about" },
   { name: "Services", href: "/services" },
   { name: "Gallery", href: "/gallery" },
+  { name: "Blog", href: "/blog" }, // Added Blog link here
   { name: "Patient Info", href: "/patient-info" },
   { name: "Contact", href: "/contact" },
 ];
@@ -27,7 +28,6 @@ export default function Navbar({ phone = "(123) 456-7890" }: NavbarProps) {
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            {/*IMAGE TAG */}
             <Image
               src="/logo.png"
               alt="Premium Dental Logo"
