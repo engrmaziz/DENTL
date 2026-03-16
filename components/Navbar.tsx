@@ -14,7 +14,11 @@ const navLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  phone?: string;
+}
+
+export default function Navbar({ phone = "(123) 456-7890" }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -47,9 +51,9 @@ export default function Navbar() {
               ))}
             </div>
             <div className="flex items-center gap-4 border-l border-slate-200 pl-6">
-              <a href="tel:+1234567890" className="flex items-center gap-2 text-sm font-bold text-slate-800">
+              <a href={`tel:${phone.replace(/\D/g, "")}`} className="flex items-center gap-2 text-sm font-bold text-slate-800">
                 <Phone size={18} className="text-secondary" />
-                (123) 456-7890
+                {phone}
               </a>
               <Link
                 href="/appointment"
@@ -94,9 +98,9 @@ export default function Navbar() {
                 </Link>
               ))}
               <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
-                <a href="tel:+1234567890" className="flex justify-center flex-1 items-center gap-2 text-base font-bold text-slate-800 p-2 bg-slate-50 rounded-lg">
+                <a href={`tel:${phone.replace(/\D/g, "")}`} className="flex justify-center flex-1 items-center gap-2 text-base font-bold text-slate-800 p-2 bg-slate-50 rounded-lg">
                   <Phone size={20} className="text-secondary" />
-                  (123) 456-7890
+                  {phone}
                 </a>
                 <Link
                   href="/appointment"

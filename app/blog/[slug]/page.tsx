@@ -1,85 +1,127 @@
+import { supabase } from "@/lib/supabaseClient";
+import { Blog } from "@/types/blog";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, User, ArrowLeft } from "lucide-react";
+import { Calendar, User, ArrowLeft, Tag } from "lucide-react";
+import { Metadata } from "next";
 
-// Mock data to simulate Supabase fetch
-const DUMMY_POST = {
-  title: "10 Essential Tips for Maintaining a Healthy Smile",
-  content: `
-    <p>Maintaining a healthy smile goes beyond just brushing your teeth twice a day. Your oral health is a critical component of your overall health and well-being. Here are ten essential tips our experts recommend to keep your smile bright and your teeth strong.</p>
-    
-    <h3>1. Don't Go to Bed Without Brushing</h3>
-    <p>It's no secret that the general recommendation is to brush at least twice a day. Still, many of us continue to neglect brushing our teeth at night. Brushing before bed gets rid of the germs and plaque that accumulate throughout the day.</p>
-    
-    <h3>2. Brush Properly</h3>
-    <p>The way you brush is equally important—in fact, doing a poor job of brushing your teeth is almost as bad as not brushing at all. Take your time, moving the toothbrush in gentle, circular motions to remove plaque. Unremoved plaque can harden, leading to calculus buildup and gingivitis (early gum disease).</p>
+export const revalidate = 60;
 
-    <h3>3. Don't Neglect Your Tongue</h3>
-    <p>Plaque can also build up on your tongue. Not only can this lead to bad mouth odor, but it can lead to other oral health problems. Gently brush your tongue every time you brush your teeth.</p>
+interface BlogPageProps {
+  params: Promise<{ slug: string }>;
+}
 
-    <h3>4. Use a Fluoride Toothpaste</h3>
-    <p>As for toothpaste, there are more important elements to look for than whitening power and flavors. No matter which version you choose, make sure it contains fluoride. While fluoride has come under scrutiny by those worried about how it impacts other areas of health, this substance remains a mainstay in oral health.</p>
+async function getBlog(slug: string): Promise<Blog | null> {
+  const { data, error } = await supabase
+    .from("blogs")
+    .select("*")
+    .eq("slug", slug)
+    .single();
 
-    <h3>5. Treat Flossing as Important as Brushing</h3>
-    <p>Many who brush regularly neglect to floss. Flossing is not just for getting those little pieces of Chinese food or broccoli that may be getting stuck in between your teeth. It's really a way to stimulate the gums, reduce plaque, and help lower inflammation in the area.</p>
-  `,
-  author: "Dr. Sarah Smith",
-  cover_image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=1200&h=600",
-  published_at: "2024-03-15T10:00:00Z"
-};
+  if (error || !data) return null;
+  return data;
+}
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  // In a real app, fetch post by slug from Supabase
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const blog = await getBlog(slug);
+  if (!blog) return { title: "Article Not Found" };
   return {
-    title: DUMMY_POST.title,
-    description: "Read the full article on our dental blog.",
+    title: blog.title,
+    description: blog.content.slice(0, 160),
   };
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  // In a real app, you would fetch the post using params.slug
-  const post = DUMMY_POST;
+function formatDate(dateStr?: string): string {
+  if (!dateStr) return "";
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+export default async function BlogSlugPage({ params }: BlogPageProps) {
+  const { slug } = await params;
+  const blog = await getBlog(slug);
+
+  if (!blog) notFound();
 
   return (
-    <div className="pt-20 bg-white">
-      <article className="pb-24">
-        {/* Cover Image */}
-        <div className="w-full h-[400px] lg:h-[500px] relative bg-slate-100">
+    <div className="min-h-screen bg-white">
+      {/* Cover Image */}
+      {blog.image_url && (
+        <div className="relative h-64 md:h-96 w-full overflow-hidden">
           <Image
-            src={post.cover_image}
-            alt={post.title}
+            src={blog.image_url}
+            alt={blog.title}
             fill
             className="object-cover"
+            unoptimized
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-full p-8 lg:p-16">
-            <div className="container mx-auto max-w-4xl">
-              <Link href="/blog" className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors text-sm font-medium">
-                <ArrowLeft size={16} /> Back to Blog
-              </Link>
-              <h1 className="text-3xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">
-                {post.title}
-              </h1>
-              <div className="flex items-center gap-6 text-white/80 text-sm font-medium">
-                <span className="flex items-center gap-2"><User size={16} /> {post.author}</span>
-                <span className="flex items-center gap-2"><Calendar size={16} /> {new Date(post.published_at).toLocaleDateString()}</span>
-              </div>
-            </div>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
+      )}
 
-        {/* Content */}
-        <div className="container mx-auto max-w-3xl px-4 py-16">
-          <div 
-            className="prose prose-lg prose-slate prose-blue max-w-none
-              prose-headings:font-bold prose-headings:text-slate-900 
-              prose-a:text-primary hover:prose-a:text-blue-700
-              prose-img:rounded-2xl prose-img:shadow-sm"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Back link */}
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium mb-8 group"
+        >
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Blog
+        </Link>
+
+        {/* Article Header */}
+        <header className="mb-10">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">
+              <Tag size={13} />
+              {blog.category}
+            </span>
+          </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight mb-6">
+            {blog.title}
+          </h1>
+          <div className="flex items-center gap-6 text-sm text-slate-500 pb-6 border-b border-slate-100">
+            <span className="flex items-center gap-2">
+              <User size={16} className="text-blue-500" />
+              <span className="font-medium text-slate-700">{blog.author}</span>
+            </span>
+            {blog.published_at && (
+              <span className="flex items-center gap-2">
+                <Calendar size={16} className="text-blue-500" />
+                {formatDate(blog.published_at)}
+              </span>
+            )}
+          </div>
+        </header>
+
+        {/* Article Content */}
+        <article className="prose prose-lg prose-slate max-w-none">
+          <div className="text-slate-700 leading-relaxed whitespace-pre-wrap text-base md:text-lg">
+            {blog.content}
+          </div>
+        </article>
+
+        {/* CTA */}
+        <div className="mt-16 p-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl text-white text-center">
+          <h3 className="text-xl font-bold mb-2">Ready to Transform Your Smile?</h3>
+          <p className="text-blue-100 mb-6 text-sm">
+            Book a consultation with our expert dental team today.
+          </p>
+          <Link
+            href="/appointment"
+            className="inline-flex items-center gap-2 bg-white text-blue-700 font-semibold px-6 py-3 rounded-full hover:bg-blue-50 transition-colors"
+          >
+            Book Appointment
+            <ArrowLeft size={16} className="rotate-180" />
+          </Link>
         </div>
-      </article>
+      </div>
     </div>
   );
 }
