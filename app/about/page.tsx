@@ -127,11 +127,38 @@ export default function AboutPage() {
       <section className="py-16 bg-slate-900 text-white text-center">
         <div className="container mx-auto max-w-7xl px-4">
           <p className="text-slate-400 font-medium tracking-wider uppercase text-sm mb-8">Accreditations & Memberships</p>
-          <div className="flex flex-wrap justify-center gap-12 opacity-50 grayscale">
-            <div className="font-bold text-2xl tracking-tighter">ADA Certified</div>
-            <div className="font-bold text-2xl tracking-tighter">AACD Member</div>
-            <div className="font-bold text-2xl tracking-tighter">Invisalign Platinum</div>
-            <div className="font-bold text-2xl tracking-tighter">Top Doc 2024</div>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+
+            <div className="flex flex-col items-center group">
+              <div className="border-2 border-white/20 px-4 py-2 rounded-lg group-hover:border-white/50 transition-colors">
+                <span className="font-black text-xl tracking-tighter">ADA</span>
+              </div>
+              <span className="text-[10px] uppercase tracking-widest mt-2 font-bold text-slate-500">Certified Professional</span>
+            </div>
+
+            <div className="flex flex-col items-center group">
+              <div className="border-2 border-white/20 px-4 py-2 rounded-lg group-hover:border-white/50 transition-colors">
+                <span className="font-black text-xl tracking-tighter">AACD</span>
+              </div>
+              <span className="text-[10px] uppercase tracking-widest mt-2 font-bold text-slate-500">Active Member</span>
+            </div>
+
+            <div className="flex flex-col items-center group">
+              <div className="flex items-center gap-2">
+                <span className="font-black text-xl tracking-tighter">invisalign</span>
+                <span className="bg-blue-500 text-[10px] px-2 py-0.5 rounded text-white font-bold">PLATINUM</span>
+              </div>
+              <span className="text-[10px] uppercase tracking-widest mt-2 font-bold text-slate-500">Provider 2024</span>
+            </div>
+
+            <div className="flex flex-col items-center group">
+              <div className="relative">
+                <span className="font-black text-xl tracking-tighter italic">TopDoc</span>
+                <div className="absolute -top-1 -right-4 w-3 h-3 bg-yellow-500 rounded-full blur-[2px] animate-pulse"></div>
+              </div>
+              <span className="text-[10px] uppercase tracking-widest mt-2 font-bold text-slate-500">Award Winner</span>
+            </div>
+
           </div>
         </div>
       </section>

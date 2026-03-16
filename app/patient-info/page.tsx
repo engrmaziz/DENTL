@@ -21,9 +21,9 @@ export default function PatientInfoPage() {
 
       <section className="py-24 bg-white">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
-            
+
             {/* New Patients */}
             <div className="space-y-6">
               <div className="w-14 h-14 bg-blue-50 text-primary rounded-2xl flex items-center justify-center mb-8">
@@ -84,7 +84,7 @@ export default function PatientInfoPage() {
               </div>
               <h2 className="text-3xl font-extrabold text-slate-900">Cancellation Policy</h2>
               <p className="text-slate-600 leading-relaxed text-lg">
-                We reserve time specifically for you. If you need to cancel or modify an appointment, we kindly ask for a 48-hour notice. 
+                We reserve time specifically for you. If you need to cancel or modify an appointment, we kindly ask for a 48-hour notice.
                 Cancellations made with less than 48 hours notice may be subject to a fee. By providing early notice, you allow us to offer that time slot to another patient in need of care.
               </p>
             </div>
@@ -98,13 +98,13 @@ export default function PatientInfoPage() {
               <p className="text-slate-600 leading-relaxed text-lg">
                 Your medical records and personal information are strictly confidential. We fully comply with the Health Insurance Portability and Accountability Act (HIPAA) to protect your health information.
               </p>
-              <Link href="#" className="text-primary font-semibold hover:underline mt-2 inline-block">
+              <Link href="/privacy-policy" className="text-primary font-semibold hover:underline mt-2 inline-block">
                 Read our Notice of Privacy Practices →
               </Link>
             </div>
-            
+
           </div>
-          
+
         </div>
       </section>
     </div>
