@@ -1,14 +1,60 @@
 import Link from "next/link";
 import { Facebook, Instagram, Twitter, MapPin, Phone, Mail, Clock } from "lucide-react";
 import Image from "next/image";
+import { supabase } from "@/lib/supabaseClient";
 
-export default function Footer() {
+interface ContactInfo {
+  phone: string;
+  email: string;
+  address: string;
+  hours_weekday: string;
+  hours_saturday: string;
+  hours_sunday: string;
+}
+
+const defaults: ContactInfo = {
+  phone: "(123) 456-7890",
+  email: "contact@premiumdental.com",
+  address: "123 Health Avenue, Medical District,\nNew York, NY 10001",
+  hours_weekday: "Mon-Fri: 8:00 AM - 7:00 PM",
+  hours_saturday: "Sat: 9:00 AM - 4:00 PM",
+  hours_sunday: "Sunday: 24/7 Emergencies Only",
+};
+
+async function getContactInfo(): Promise<ContactInfo> {
+  try {
+    const { data, error } = await supabase
+      .from("clinic_settings")
+      .select("key, value")
+      .in("key", ["phone", "email", "address", "hours_weekday", "hours_saturday", "hours_sunday"]);
+
+    if (error || !data) return defaults;
+
+    const map: Record<string, string> = {};
+    data.forEach(({ key, value }: { key: string; value: string }) => {
+      map[key] = value;
+    });
+
+    return {
+      phone: map.phone || defaults.phone,
+      email: map.email || defaults.email,
+      address: map.address || defaults.address,
+      hours_weekday: map.hours_weekday || defaults.hours_weekday,
+      hours_saturday: map.hours_saturday || defaults.hours_saturday,
+      hours_sunday: map.hours_sunday || defaults.hours_sunday,
+    };
+  } catch {
+    return defaults;
+  }
+}
+
+export default async function Footer() {
+  const contact = await getContactInfo();
+
   return (
     <footer className="bg-slate-900 text-slate-300 pt-16 pb-8 border-t border-slate-800">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-12 text-center md:text-left">
-
-
           {/* Brand Info */}
           <div className="space-y-6 flex flex-col items-center md:items-start">
             <Link href="/" className="flex items-center gap-2">
@@ -23,8 +69,6 @@ export default function Footer() {
             <p className="text-sm leading-relaxed text-slate-400">
               Advanced dental care with modern technology and compassionate service. Your smile is our top priority.
             </p>
-
-
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
                 <Facebook size={18} />
@@ -64,28 +108,38 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Details */}
+          {/* Contact Details (dynamic from Supabase) */}
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-white font-semibold mb-6 flex items-center gap-2 text-lg">Contact Us</h3>
             <ul className="space-y-4 text-sm flex flex-col items-center md:items-start">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-secondary shrink-0 mt-0.5" />
-                <span className="text-slate-400">123 Health Avenue, Medical District,<br />New York, NY 10001</span>
+                <span className="text-slate-400 whitespace-pre-line">{contact.address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-secondary shrink-0" />
-                <a href="tel:+1234567890" className="hover:text-white transition-colors">(123) 456-7890</a>
+                <a
+                  href={`tel:${contact.phone.replace(/\D/g, "")}`}
+                  className="hover:text-white transition-colors"
+                >
+                  {contact.phone}
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-secondary shrink-0" />
-                <a href="mailto:contact@premiumdental.com" className="hover:text-white transition-colors">contact@premiumdental.com</a>
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="hover:text-white transition-colors"
+                >
+                  {contact.email}
+                </a>
               </li>
               <li className="flex items-start gap-3">
                 <Clock size={18} className="text-secondary shrink-0 mt-0.5" />
                 <span className="text-slate-400">
-                  Mon-Fri: 8:00 AM - 7:00 PM<br />
-                  Sat: 9:00 AM - 4:00 PM<br />
-                  <span className="text-red-400 font-medium">Sunday: 24/7 Emergencies Only</span>
+                  {contact.hours_weekday}<br />
+                  {contact.hours_saturday}<br />
+                  <span className="text-red-400 font-medium">{contact.hours_sunday}</span>
                 </span>
               </li>
             </ul>
