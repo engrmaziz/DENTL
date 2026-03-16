@@ -1,0 +1,68 @@
+To test the Premium Dental SaaS Template, follow these steps to set up your backend services and verify the functionality.
+
+1. Set Up Your Backend Services
+The template requires two main services to be fully functional:
+
+Supabase: For the database (appointments, blog posts, testimonials) and image storage.
+Resend: For sending contact form and appointment notification emails.
+2. Configure Environment Variables
+In the project root (demo1/), find the 
+
+.env.example
+ file.
+Create a new file named .env.local.
+Copy the contents from 
+
+.env.example
+ into .env.local and fill in your actual API keys:
+NEXT_PUBLIC_SUPABASE_URL & NEXT_PUBLIC_SUPABASE_ANON_KEY: Found in your Supabase Project Settings > API.
+RESEND_API_KEY: Found in your Resend Dashboard > API Keys.
+NEXT_PUBLIC_WHATSAPP_NUMBER: Your clinic's phone number (format: 1234567890).
+3. Initialize the Database
+Go to your Supabase Dashboard.
+Open the SQL Editor in the side navigation.
+Open the 
+
+supabase_schema.sql
+ file I created in your project root.
+Copy the entire content of that file and paste it into the Supabase SQL Editor, then click Run.
+This will create the tables for appointments and blog posts, and set up Row Level Security (RLS) so that anyone can submit a form but only you can read them.
+4. Run the Development Server
+Open your terminal in the demo1/ directory and run:
+
+bash
+npm run dev
+Open http://localhost:3000 in your browser.
+
+5. Systematic Testing Checklist
+A. Visual & Navigation Test
+ Home Page: Scroll through and check animations (Framer Motion).
+ Responsive Design: Resize your browser or use Mobile View (F12) to ensure the 
+
+Navbar
+ collapses into a hamburger menu and the layout stays clean on small screens.
+ Links: Click on all navigation links (
+
+About
+, 
+
+Services
+, 
+
+Gallery
+, 
+
+FAQ
+) to ensure they load correctly.
+B. Functional Form Testing
+ Appointment Booking: Navigate to /appointment. Fill out the form and submit.
+Verification: Check your Supabase Dashboard > Table Editor > appointments table. The data should appear there instantly.
+ Contact Form: Go to the bottom of the Home page or /contact. Send a message.
+Verification: Check your Resend Dashboard > Emails. You should see an "Outgoing" email notification.
+C. Special Components
+ Smile Gallery: Move the slider on the "Before/After" images to ensure react-compare-slider is working.
+ WhatsApp Button: Click the floating green button to ensure it attempts to open a WhatsApp chat with your configured number.
+ Google Reviews: Ensure the review stars and cards render beautifully.
+D. Content Management (Optional)
+ Blog: Add a row to the blog_posts table in Supabase. Refresh the /blog page; your new post should automatically appear with a dynamic route (/blog/[slug]).
+Tip: If you see any errors regarding "Placeholder Connect", it means your .env.local keys aren't correctly recognized or the API services are unreachable. Ensure you restart the dev server after making .env.local changes!
