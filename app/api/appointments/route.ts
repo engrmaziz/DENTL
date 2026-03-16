@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 import { resend } from "@/lib/resend";
+import { createGoogleCalendarEvent } from "@/lib/googleCalendar";
 
 interface AppointmentRequest {
   name: string;
@@ -9,96 +10,6 @@ interface AppointmentRequest {
   preferred_date: string;
   preferred_time: string;
   reason: string;
-}
-
-/** Create a Google Calendar event using Service Account credentials. Returns the event ID or null. */
-async function createGoogleCalendarEvent(appointment: AppointmentRequest): Promise<string | null> {
-  const calendarId = process.env.GOOGLE_CALENDAR_ID;
-  const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
-
-  if (!calendarId || !serviceAccountEmail || !privateKey) {
-    return null;
-  }
-
-  try {
-    const now = Math.floor(Date.now() / 1000);
-    const header = { alg: "RS256", typ: "JWT" };
-    const payload = {
-      iss: serviceAccountEmail,
-      scope: "https://www.googleapis.com/auth/calendar",
-      aud: "https://oauth2.googleapis.com/token",
-      exp: now + 3600,
-      iat: now,
-    };
-
-    const base64Header = Buffer.from(JSON.stringify(header)).toString("base64url");
-    const base64Payload = Buffer.from(JSON.stringify(payload)).toString("base64url");
-    const signingInput = `${base64Header}.${base64Payload}`;
-
-    const { createSign } = await import("crypto");
-    const sign = createSign("RSA-SHA256");
-    sign.update(signingInput);
-    const cleanKey = privateKey.replace(/\\n/g, "\n");
-    const signature = sign.sign(cleanKey, "base64url");
-    const jwt = `${signingInput}.${signature}`;
-
-    const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-        assertion: jwt,
-      }),
-    });
-
-    if (!tokenRes.ok) return null;
-    const { access_token } = await tokenRes.json();
-
-    // Parse preferred_time to 24h for start/end dateTime fields
-    const ampmMatch = appointment.preferred_time.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-    let startTime24h = "09:00";
-    if (ampmMatch) {
-      let hours = parseInt(ampmMatch[1]);
-      const minutes = ampmMatch[2];
-      const meridiem = ampmMatch[3].toUpperCase();
-      if (meridiem === "PM" && hours !== 12) hours += 12;
-      if (meridiem === "AM" && hours === 12) hours = 0;
-      startTime24h = `${hours.toString().padStart(2, "0")}:${minutes}`;
-    }
-
-    const [sh, sm] = startTime24h.split(":").map(Number);
-    const endTime24h = `${(sh + 1).toString().padStart(2, "0")}:${sm.toString().padStart(2, "0")}`;
-
-    const eventRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          summary: `Dental Appointment - ${appointment.name}`,
-          description: `Patient: ${appointment.name}\nPhone: ${appointment.phone}${appointment.email ? `\nEmail: ${appointment.email}` : ""}\nReason: ${appointment.reason}`,
-          start: {
-            dateTime: `${appointment.preferred_date}T${startTime24h}:00`,
-            timeZone: "America/New_York",
-          },
-          end: {
-            dateTime: `${appointment.preferred_date}T${endTime24h}:00`,
-            timeZone: "America/New_York",
-          },
-        }),
-      }
-    );
-
-    if (!eventRes.ok) return null;
-    const eventData = await eventRes.json();
-    return eventData.id || null;
-  } catch {
-    return null; // Fail silently — calendar is optional
-  }
 }
 
 export async function POST(request: Request) {
@@ -134,7 +45,19 @@ export async function POST(request: Request) {
     }
 
     // Create Google Calendar event (optional — fails silently if not configured)
-    const googleEventId = await createGoogleCalendarEvent(data);
+    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+    const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+    const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+
+    let googleEventId: string | null = null;
+    if (calendarId && serviceAccountEmail && privateKey) {
+      googleEventId = await createGoogleCalendarEvent({
+        ...data,
+        calendarId,
+        serviceAccountEmail,
+        privateKey,
+      });
+    }
 
     // Insert into Supabase
     const { data: appointment, error } = await supabase
