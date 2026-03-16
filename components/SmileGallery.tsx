@@ -9,22 +9,22 @@ const transformations = [
     id: 1,
     title: "Invisalign Treatment",
     category: "Orthodontics",
-    before: "/invisalign-before.jpg",
-    after: "/invisalign-after.jpg",
+    before: "/invisalign-before.JPG",
+    after: "/invisalign-after.JPG",
   },
   {
     id: 2,
     title: "Porcelain Veneers",
     category: "Cosmetic",
-    before: "/veneers-before.jpg",
-    after: "/veneers-after.jpg",
+    before: "/veneers-before.JPG",
+    after: "/veneers-after.JPG",
   },
   {
     id: 3,
     title: "Teeth Whitening",
     category: "Cosmetic",
-    before: "/whitening-before.jpg",
-    after: "/whitening-after.jpg",
+    before: "/whitening-before.JPG",
+    after: "/whitening-after.JPG",
   }
 ];
 
