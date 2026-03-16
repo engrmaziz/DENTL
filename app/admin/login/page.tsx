@@ -21,7 +21,7 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError(null);
 
-    const { error: authError } = await supabase.auth.signInWithPassword({
+    const { data, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -32,9 +32,15 @@ export default function AdminLoginPage() {
       return;
     }
 
-    // Use a full page navigation so the browser sends updated cookies and
-    // proxy.ts can immediately read the new Supabase session cookie.
-    window.location.href = redirect;
+    // Verify the client-side session exists before navigating (development only)
+    if (process.env.NODE_ENV !== "production") {
+      console.log("Session set:", data.session);
+    }
+
+    // Use replace() to perform a full page navigation so the browser sends the
+    // updated session cookie to the server, and to clear the login page from
+    // the history stack to prevent back-button loops.
+    window.location.replace(redirect);
   };
 
   return (

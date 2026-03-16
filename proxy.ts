@@ -5,33 +5,26 @@ export async function proxy(request: NextRequest) {
 
   // Only protect /admin routes (but not /admin/login)
   if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const allCookies = request.cookies.getAll();
 
-    // Guard against missing environment variable to avoid crashes
-    if (!supabaseUrl) {
-      const loginUrl = new URL("/admin/login", request.url);
-      loginUrl.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(loginUrl);
+    // Debug: log all cookies so we can see exactly what Next.js receives
+    if (process.env.NODE_ENV !== "production") {
+      console.log(
+        "[proxy] Request cookies:",
+        allCookies.map((c) => c.name)
+      );
     }
 
-    // Derive the project reference from the Supabase URL
-    // e.g. https://abcdefgh.supabase.co -> abcdefgh
-    const projectRef = supabaseUrl.split("//")[1]?.split(".")[0] ?? "";
-
-    // Check all known Supabase cookie name variants:
-    //   sb-access-token          – legacy format
-    //   sb-<ref>-auth-token       – standard v2 format
-    //   sb-<ref>-auth-token.<n>   – chunked token (any number of chunks)
-    const cookiePrefix = projectRef ? `sb-${projectRef}-auth-token` : "";
-    const hasSession =
-      request.cookies.has("sb-access-token") ||
-      (cookiePrefix !== "" &&
-        request.cookies.getAll().some((c) => c.name === cookiePrefix || c.name.startsWith(`${cookiePrefix}.`)));
+    // Accept any cookie whose name contains 'auth-token' or 'access-token'
+    const hasSession = allCookies.some(
+      (c) => c.name.includes("auth-token") || c.name.includes("access-token")
+    );
 
     // Also accept a valid Bearer token passed via the Authorization header
     const authHeaderValue = request.headers.get("authorization") ?? "";
     const hasAuthHeader =
-      authHeaderValue.startsWith("Bearer ") && authHeaderValue.length > "Bearer ".length;
+      authHeaderValue.startsWith("Bearer ") &&
+      authHeaderValue.length > "Bearer ".length;
 
     if (!hasSession && !hasAuthHeader) {
       const loginUrl = new URL("/admin/login", request.url);
