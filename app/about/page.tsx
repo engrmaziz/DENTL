@@ -69,7 +69,7 @@ export default function AboutPage() {
               <h3 className="text-xl font-bold text-slate-900 mb-3">Compassion</h3>
               <p className="text-slate-600">We listen to your concerns, understand your fears, and treat you with the utmost empathy.</p>
             </div>
-            
+
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 text-center">
               <div className="w-16 h-16 bg-blue-50 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
                 <Award size={32} />
@@ -98,31 +98,31 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <DoctorCard 
+            <DoctorCard
               name="Dr. Sarah Smith, DDS"
               role="Lead Prosthodontist & Founder"
               image="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=800&h=800"
               bio="Dr. Smith graduated top of her class from NYU College of Dentistry. With over 15 years of experience, she specializes in restorative and cosmetic dentistry, bringing thousands of smiles to life."
               specialties={["Cosmetic Dentistry", "Dental Implants", "Invisalign"]}
             />
-            <DoctorCard 
+            <DoctorCard
               name="Dr. Michael Chen, DMD"
               role="Orthodontist"
               image="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=800&h=800"
               bio="Dr. Chen completed his residency at UCLA. He is passionate about modern orthodontic solutions and has successfully treated severe malocclusions with both traditional brackets and clear aligners."
               specialties={["Braces", "Clear Aligners", "TMJ Treatment"]}
             />
-            <DoctorCard 
+            <DoctorCard
               name="Dr. Emily Davis, DDS"
               role="Pediatric Dentist"
-              image="https://images.unsplash.com/photo-1594824436998-efa4c2d2cb2f?auto=format&fit=crop&q=80&w=800&h=800"
+              image="https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               bio="Known for her gentle approach, Dr. Davis makes dental visits fun and fear-free for children. She focuses on early intervention and preventative care to set kids up for a lifetime of healthy smiles."
               specialties={["Pediatric Care", "Preventative Care", "Special Needs"]}
             />
           </div>
         </div>
       </section>
-      
+
       {/* Certifications Snapshot */}
       <section className="py-16 bg-slate-900 text-white text-center">
         <div className="container mx-auto max-w-7xl px-4">

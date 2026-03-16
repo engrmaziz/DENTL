@@ -9,16 +9,16 @@ export const metadata = {
 const clinicImages = [
   "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=800&h=600",
   "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=800&h=600",
-  "https://images.unsplash.com/photo-1590625691060-e83ee91e84e1?auto=format&fit=crop&q=80&w=800&h=600",
+  "https://images.unsplash.com/photo-1667133295315-820bb6481730?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=800&h=600",
-  "https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?auto=format&fit=crop&q=80&w=800&h=600",
-  "https://images.unsplash.com/photo-1524503033411-c9566986fc8f?auto=format&fit=crop&q=80&w=800&h=600",
+  "https://images.unsplash.com/photo-1593022356769-11f762e25ed9?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1626878880028-0438b1403b3f?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
 export default function ClinicGalleryPage() {
   return (
     <div className="pt-20">
-      
+
       {/* Transformations Gallery Component */}
       <SmileGallery />
 
@@ -48,7 +48,7 @@ export default function ClinicGalleryPage() {
           </div>
         </div>
       </section>
-      
+
     </div>
   );
 }
