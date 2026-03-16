@@ -25,7 +25,7 @@ export default function Home() {
               <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                 Our clinic is led by top-rated dental professionals who are passionate about bringing you the best in oral healthcare. We combine artistic precision with advanced medical science to ensure your smile is not only beautiful but healthy from the roots up.
               </p>
-              
+
               <ul className="space-y-4 mb-10">
                 <li className="flex items-center gap-3 font-semibold text-slate-800">
                   <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-primary">✓</div>
@@ -41,16 +41,16 @@ export default function Home() {
                 </li>
               </ul>
 
-              <Link 
-                href="/about" 
+              <Link
+                href="/about"
                 className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-full font-semibold transition-all shadow-md group"
               >
                 Learn More About Us <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
-            
+
             <div className="w-full lg:w-1/2 max-w-md lg:max-w-none">
-              <DoctorCard 
+              <DoctorCard
                 name="Dr. Sarah Smith, DDS"
                 role="Lead Prosthodontist & Founder"
                 image="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=800&h=800"
@@ -63,7 +63,7 @@ export default function Home() {
       </section>
 
       <SmileGallery />
-      
+
       <Testimonials />
 
       {/* Contact & Location Section */}
@@ -77,58 +77,72 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            
-            {/* Contact Details & Maps */}
-            <div className="lg:col-span-5 flex flex-col gap-8">
-              <div className="bg-blue-50/50 rounded-3xl p-8 border border-blue-100">
-                <h3 className="text-2xl font-bold text-slate-900 mb-6">Contact Information</h3>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary shadow-sm shrink-0">
-                      <Phone size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Phone</h4>
-                      <p className="text-slate-600">(123) 456-7890</p>
-                      <p className="text-sm text-slate-500 mt-1">Mon-Fri 8am-7pm, Sat 9am-4pm</p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+
+
+
+
+            {/* Left Column: Contact Details & Maps */}
+            <div className="lg:col-span-5 flex flex-col gap-8 h-full">
+
+              {/* Premium Tinted Card - ADDED `h-fit flex-none` so it STOPS stretching */}
+              <div className="bg-blue-50/40 rounded-3xl p-8 border border-blue-100/60 shadow-sm space-y-8 h-fit flex-none">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Contact Information</h3>
+
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm shrink-0">
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-1">Phone</h4>
+                    <div className="space-y-1">
+                      <p className="text-slate-600 hover:text-primary transition-colors cursor-pointer">(123) 456-7890</p>
+                      <p className="text-sm text-slate-500">Mon-Fri 8am-7pm, Sat 9am-4pm</p>
                     </div>
                   </div>
+                </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary shadow-sm shrink-0">
-                      <MapPin size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Clinic Address</h4>
-                      <p className="text-slate-600 leading-relaxed">123 Health Avenue,<br />Medical District, NY 10001</p>
-                    </div>
+                <div className="w-full h-px bg-blue-200/50"></div>
+
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm shrink-0">
+                    <MapPin size={24} />
                   </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-1">Clinic Address</h4>
+                    <p className="text-slate-600 leading-relaxed">123 Health Avenue,<br />Medical District, NY 10001</p>
+                  </div>
+                </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 shadow-sm shrink-0">
-                      <Clock size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Emergency Care</h4>
-                      <p className="text-red-600 font-medium">Available 24/7</p>
-                      <p className="text-sm text-slate-500 mt-1">Call the emergency hotline immediately.</p>
-                    </div>
+                <div className="w-full h-px bg-blue-200/50"></div>
+
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-red-500 shadow-sm shrink-0">
+                    <Clock size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-1">Emergency Care</h4>
+                    <p className="text-red-600 font-medium">Available 24/7</p>
+                    <p className="text-sm text-slate-500 mt-1">Call the emergency hotline immediately.</p>
                   </div>
                 </div>
               </div>
 
-              <div className="h-64 rounded-3xl overflow-hidden shadow-sm">
-                <MapEmbed />
+              {/* Map stretching to fill exact remaining height */}
+              <div className="flex-1 w-full min-h-[300px] rounded-3xl overflow-hidden shadow-sm border border-slate-200 relative group">
+                <div className="absolute inset-0 w-full h-full">
+                  <MapEmbed />
+                </div>
+                <div className="absolute inset-0 bg-black/5 pointer-events-none group-hover:bg-transparent transition-colors" />
               </div>
             </div>
 
-            {/* Contact Form */}
-            <div className="lg:col-span-7">
+
+            {/* Right Column: Contact Form & Reviews */}
+            <div className="lg:col-span-7 flex flex-col gap-8 h-full">
               <ContactForm />
-              <div className="mt-8">
-                 <GoogleReviews />
+              <div className="flex-1">
+                <GoogleReviews />
               </div>
             </div>
 

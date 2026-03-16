@@ -23,77 +23,90 @@ export default function ContactPage() {
       <section className="py-24 bg-white">
         <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            
+
             {/* Contact Details & Maps */}
-            <div className="lg:col-span-5 flex flex-col gap-10">
-              
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-3xl font-extrabold text-slate-900 mb-8">Get In Touch</h2>
-                  <p className="text-slate-600 text-lg mb-8">
-                    Whether you have questions about our services, want to schedule an appointment, or have a dental emergency, our dedicated team is ready to assist you.
-                  </p>
-                </div>
 
-                <div className="bg-blue-50/50 rounded-3xl p-8 border border-blue-100 space-y-8">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary shadow-sm shrink-0">
-                      <Phone size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Phone Numbers</h4>
-                      <p className="text-slate-600 font-medium hover:text-primary transition-colors cursor-pointer">Main: (123) 456-7890</p>
-                      <p className="text-slate-600 font-medium hover:text-primary transition-colors cursor-pointer">Emergency: (123) 999-9999</p>
-                    </div>
-                  </div>
 
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary shadow-sm shrink-0">
-                      <Mail size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Email Addresses</h4>
-                      <p className="text-slate-600 font-medium hover:text-primary transition-colors cursor-pointer">contact@premiumdental.com</p>
-                      <p className="text-slate-600 font-medium hover:text-primary transition-colors cursor-pointer">appointments@premiumdental.com</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary shadow-sm shrink-0">
-                      <MapPin size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Clinic Address</h4>
-                      <p className="text-slate-600 leading-relaxed">
-                        123 Health Avenue<br />
-                        Suite 400<br />
-                        Medical District, NY 10001
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-primary shadow-sm shrink-0">
-                      <Clock size={24} />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900 mb-1">Working Hours</h4>
-                      <ul className="text-slate-600 space-y-1">
-                        <li className="flex justify-between w-48"><span>Monday - Friday</span> <span>8:00 AM - 7:00 PM</span></li>
-                        <li className="flex justify-between w-48"><span>Saturday</span> <span>9:00 AM - 4:00 PM</span></li>
-                        <li className="flex justify-between w-48 text-red-600 font-medium mt-1"><span>Sunday: Emergency Only</span></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+            {/* Contact Details & Maps */}
+            <div className="lg:col-span-5 flex flex-col gap-8">
+              <div className="space-y-4">
+                <h2 className="text-3xl font-extrabold text-slate-900">Get In Touch</h2>
+                <p className="text-slate-600 text-lg leading-relaxed">
+                  Whether you have questions about our services, want to schedule an appointment, or have a dental emergency, our dedicated team is ready to assist you.
+                </p>
               </div>
 
+              {/* Premium Tinted Card */}
+              <div className="bg-blue-50/40 rounded-3xl p-8 border border-blue-100/60 shadow-sm space-y-8">
+
+                {/* Phone */}
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm shrink-0">
+                    <Phone size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">Phone</h4>
+                    <div className="space-y-2">
+                      <p className="text-slate-600 hover:text-primary transition-colors cursor-pointer">Main: (123) 456-7890</p>
+                      <p className="text-red-600 font-medium hover:text-red-700 transition-colors cursor-pointer">Emergency: (123) 999-9999</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Visible Divider */}
+                <div className="w-full h-px bg-blue-200/50"></div>
+
+                {/* Email */}
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm shrink-0">
+                    <Mail size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">Email</h4>
+                    <div className="space-y-2">
+                      <p className="text-slate-600 hover:text-primary transition-colors cursor-pointer break-all">contact@premiumdental.com</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Visible Divider */}
+                <div className="w-full h-px bg-blue-200/50"></div>
+
+                {/* Working Hours */}
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-primary shadow-sm shrink-0">
+                    <Clock size={24} />
+                  </div>
+                  <div className="w-full">
+                    <h4 className="font-semibold text-slate-900 mb-4">Working Hours</h4>
+                    <div className="space-y-3 text-sm text-slate-600">
+                      <div className="flex justify-between items-center pb-3 border-b border-blue-200/50">
+                        <span className="font-medium">Monday - Friday</span>
+                        <span className="text-slate-500">8:00 AM - 7:00 PM</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-3 border-b border-blue-200/50">
+                        <span className="font-medium">Saturday</span>
+                        <span className="text-slate-500">9:00 AM - 4:00 PM</span>
+                      </div>
+                      {/* Cleaned up Sunday Row */}
+                      <div className="flex justify-between items-center pt-1">
+                        <span className="font-semibold text-red-600">Sunday</span>
+                        <span className="font-semibold text-red-600">Emergency Only</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
+
+
+
 
             {/* Contact Form & Expanded Map */}
             <div className="lg:col-span-7 flex flex-col gap-12">
               <ContactForm />
-              
+
               <div className="h-[400px] w-full rounded-3xl overflow-hidden shadow-sm border border-slate-100 relative group">
                 <MapEmbed className="h-full" />
                 <div className="absolute inset-0 bg-black/5 pointer-events-none group-hover:bg-transparent transition-colors" />
