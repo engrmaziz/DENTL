@@ -1,67 +1,33 @@
 import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle2, ChevronRight, HelpCircle } from "lucide-react";
+import { notFound } from "next/navigation";
+import { servicesData } from "@/lib/data";
 
-// Mock database for services
-const servicesDB: Record<string, any> = {
-  "general-dentistry": {
-    title: "General Dentistry",
-    description: "Comprehensive check-ups, cleanings, and preventative care.",
-    cover: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=1200",
-    whoItsFor: "Everyone! Routine dental visits are essential for patients of all ages to maintain good oral hygiene and catch potential issues early.",
-    benefits: [
-      "Prevents cavities and gum disease",
-      "Keeps breath fresh",
-      "Early detection of oral health issues",
-      "Saves money on complex procedures later"
-    ],
-    procedure: [
-      { step: "Examination", detail: "A thorough visual check of your teeth, gums, and mouth." },
-      { step: "X-Rays", detail: "To check for cavities between teeth or issues below the gumline." },
-      { step: "Cleaning", detail: "Removal of plaque and tartar buildup by a hygienist." },
-      { step: "Consultation", detail: "Discussing the findings and any necessary treatment plans with the dentist." }
-    ],
-    recovery: "Immediate. You can return to normal activities right after a standard check-up and cleaning.",
-    faqs: [
-      { q: "How often should I get a checkup?", a: "We recommend every 6 months for most patients." },
-      { q: "Does a cleaning hurt?", a: "No, routine cleanings are generally painless." }
-    ]
-  },
-  "teeth-whitening": {
-    title: "Teeth Whitening",
-    description: "Professional laser whitening for a brighter, sparkling smile.",
-    cover: "https://images.unsplash.com/photo-1590625691060-e83ee91e84e1?auto=format&fit=crop&q=80&w=1200",
-    whoItsFor: "Patients looking to remove stains caused by coffee, tea, smoking, or aging, and who want a more vibrant, youthful smile.",
-    benefits: [
-      "Instantly brighter smile",
-      "Removes deep-set stains",
-      "Boosts self-confidence",
-      "Safe and controlled environment"
-    ],
-    procedure: [
-      { step: "Shade Assessment", detail: "We determine your current tooth color and target shade." },
-      { step: "Preparation", detail: "Your gums and lips are protected to prevent irritation." },
-      { step: "Gel Application", detail: "A professional-grade whitening gel is applied to the teeth." },
-      { step: "Laser Activation", detail: "A specialized light is used to accelerate the whitening process." }
-    ],
-    recovery: "No downtime, though some temporary tooth sensitivity may occur for 24-48 hours.",
-    faqs: [
-      { q: "How long do the results last?", a: "Results can last from 6 months to 2 years depending on your diet and oral hygiene." },
-      { q: "Is it safe for enamel?", a: "Yes, professional whitening is completely safe for your enamel." }
-    ]
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const service = servicesData[slug];
+  
+  if (!service) {
+    return {
+      title: "Service Not Found | Premium Dental",
+      description: "The requested dental service could not be found.",
+    };
   }
-};
-
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const service = servicesDB[params.slug] || { title: "Dental Service" };
+  
   return {
     title: `${service.title} | Premium Dental`,
     description: service.description,
   };
 }
 
-export default function ServiceDetailPage({ params }: { params: { slug: string } }) {
-  const service = servicesDB[params.slug] || servicesDB["general-dentistry"]; // Fallback for demo purposes
+export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const service = servicesData[slug];
+
+  if (!service) {
+    notFound();
+  }
 
   return (
     <div className="pt-20 bg-white pb-24">
