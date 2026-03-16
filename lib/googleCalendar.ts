@@ -3,6 +3,10 @@
  * Used by both /api/calendar/check and /api/appointments.
  */
 
+/** Default timezone for calendar events. Override with CLINIC_TIMEZONE env var. */
+export const CLINIC_TIMEZONE =
+  process.env.CLINIC_TIMEZONE || "America/New_York";
+
 export interface TimeSlotResult {
   date: string;
   time: string;
@@ -203,11 +207,11 @@ export async function createGoogleCalendarEvent(params: {
           description: `Patient: ${params.name}\nPhone: ${params.phone}${params.email ? `\nEmail: ${params.email}` : ""}\nReason: ${params.reason}`,
           start: {
             dateTime: `${params.preferred_date}T${startTime24h}:00`,
-            timeZone: "America/New_York",
+            timeZone: CLINIC_TIMEZONE,
           },
           end: {
             dateTime: `${params.preferred_date}T${endTime24h}:00`,
-            timeZone: "America/New_York",
+            timeZone: CLINIC_TIMEZONE,
           },
         }),
       }

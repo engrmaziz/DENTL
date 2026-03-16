@@ -58,7 +58,7 @@ export default function GalleryAdminPage() {
 
     setUploading(true);
     const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage
       .from("gallery")

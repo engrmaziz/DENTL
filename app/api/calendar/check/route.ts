@@ -78,6 +78,7 @@ export async function POST(request: NextRequest) {
     const suggestions: TimeSlotResult[] = [];
     let checkDate = date;
     let daysChecked = 0;
+    const nowMs = Date.now();
 
     while (suggestions.length < 3 && daysChecked < 14) {
       const daySlots = generateDaySlots(checkDate, openTime, closeTime);
@@ -85,8 +86,12 @@ export async function POST(request: NextRequest) {
       for (const slot of daySlots) {
         if (suggestions.length >= 3) break;
 
-        // Compare in 24h to correctly skip the conflicting slot regardless of input format
+        // Skip the originally conflicting slot
         if (checkDate === date && parseTimeTo24h(slot.time) === time24h) continue;
+
+        // Skip slots that are in the past
+        const slotStartMs = new Date(slot.start + "Z").getTime();
+        if (slotStartMs < nowMs) continue;
 
         try {
           const slotConflict = await checkGoogleCalendarConflict(
