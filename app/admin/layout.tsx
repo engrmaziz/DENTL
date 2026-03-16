@@ -92,7 +92,7 @@ export default function AdminLayout({
       </motion.aside>
 
       {/* Desktop Sidebar (always visible) */}
-      <div className="hidden lg:flex lg:flex-col lg:w-72 lg:fixed lg:inset-y-0">
+      <div className="hidden lg:flex lg:flex-col lg:w-72 lg:fixed lg:inset-y-0 lg:z-50">
         <SidebarContent
           navItems={navItems}
           pathname={pathname}
